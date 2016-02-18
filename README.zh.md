@@ -2,18 +2,24 @@
 
 本风格指南可能和其他的风格指南略有不同, 因为焦点集中在可读性和打印效果和网页显示效果. 虽然我们有很多作者共同完成这些书籍，但是我们以这篇风格指南为基础保持我们的书籍，教程，初学者工具的风格统一整洁。
 
+<!--This style guide is different from others you may see, because the focus is centered on readability for print and the web. We created this style guide to keep the code in our books, tutorials, and starter kits nice and consistent — even though we have many different authors working on the books.-->
+
 我们的总体目标是简洁，可读和简单。
 
+<!--Our overarching goals are conciseness, readability, and simplicity.-->
+
 如何使用Objectivce－C，那请参考[Objective-C Style Guide](https://github.com/raywenderlich/objective-c-style-guide)。
+
+<!--Writing Objective-C? Check out our [Objective-C Style Guide](https://github.com/raywenderlich/objective-c-style-guide) too.-->
 
 ## 内容列表
 
 * [命名](#命名)
   * [Prose](#prose)
-  * [Class Prefixes](#class-prefixes)
-* [Spacing](#spacing)
-* [Comments](#comments)
-* [Classes and Structures](#classes-and-structures)
+  * [类名前缀](#类名前缀)
+* [空格](#空格)
+* [注释](#注释)
+* [类和结构体](#类和结构体)
   * [Use of Self](#use-of-self)
   * [Protocol Conformance](#protocol-conformance)
   * [Computed Properties](#computed-properties)
@@ -35,9 +41,11 @@
 
 ## 命名
 
-Use descriptive names with camel case for classes, methods, variables, etc. Class names should be capitalized, while method names and variables should start with a lower case letter.
+用描述性的名字和驼峰结构给类，方法，变量等命名。类名应该以大写字母开头，但是方法名和变量名应该以小写字母开头，不建议使用自制缩写例如：`but` short for `buton`, `pct` short for `percentage`
 
-**Preferred:**
+<!--Use descriptive names with camel case for classes, methods, variables, etc. Class names should be capitalized, while method names and variables should start with a lower case letter.-->
+
+**推荐:**
 
 ```swift
 private let maximumWidgetCount = 100
@@ -48,7 +56,7 @@ class WidgetContainer {
 }
 ```
 
-**Not Preferred:**
+**不推荐:**
 
 ```swift
 let MAX_WIDGET_COUNT = 100
@@ -59,12 +67,14 @@ class app_widgetContainer {
 }
 ```
 
-For functions and init methods, prefer named parameters for all arguments unless the context is very clear. Include external parameter names if it makes function calls more readable.
+对于函数和init方法，建议给所有参数加上参数标签，除非函数意义非常明确，建议使用额外参数标签增加可读性
+
+<!--For functions and init methods, prefer named parameters for all arguments unless the context is very clear. Include external parameter names if it makes function calls more readable.-->
 
 ```swift
-func dateFromString(dateString: String) -> NSDate
+func dateFromString(dateString: String) -> NSDate // 意义非常明确可以不加参数标签
 func convertPointAt(column column: Int, row: Int) -> CGPoint
-func timedAction(afterDelay delay: NSTimeInterval, perform action: SKAction) -> SKAction!
+func timedAction(afterDelay delay: NSTimeInterval, perform action: SKAction) -> SKAction! // 额外参数标签增加可读性
 
 // would be called like this:
 dateFromString("2014-03-14")
@@ -72,7 +82,9 @@ convertPointAt(column: 42, row: 13)
 timedAction(afterDelay: 1.0, perform: someOtherAction)
 ```
 
-For methods, follow the standard Apple convention of referring to the first parameter in the method name:
+对于方法，下面的Apple开发这大会上提到的
+
+<!--For methods, follow the standard Apple convention of referring to the first parameter in the method name:-->
 
 ```swift
 class Counter {
@@ -81,9 +93,9 @@ class Counter {
 }
 ```
 
-### Enumerations
+### 枚举
 
-Use UpperCamelCase for enumeration values:
+枚举应该以大写字母开头驼峰命名
 
 ```swift
 enum Shape {
@@ -96,7 +108,10 @@ enum Shape {
 
 ### Prose
 
-When referring to functions in prose (tutorials, books, comments) include the required parameter names from the caller's perspective or `_` for unnamed parameters.
+当在文字中引用带参数的函数时，需要包含参数名，并用`_`代替未命名参数
+
+<!--When referring to functions in prose (tutorials, books, comments) include the required parameter names from the caller's perspective or `_` for unnamed parameters.
+-->
 
 > Call `convertPointAt(column:row:)` from your own `init` implementation.
 >
@@ -106,13 +121,17 @@ When referring to functions in prose (tutorials, books, comments) include the re
 >
 > You shouldn't call the data source method `tableView(_:cellForRowAtIndexPath:)` directly.
 
-When in doubt, look at how Xcode lists the method in the jump bar – our style here matches that.
+如果有疑惑，抬头看看Xcode的导航栏，用`ctrl`+`6`打开函数导航，我们的风格和Xcode一致
+
+<!--When in doubt, look at how Xcode lists the method in the jump bar – our style here matches that.-->
 
 ![Methods in Xcode jump bar](screens/xcode-jump-bar.png)
 
-### Class Prefixes
+### 类名前缀
 
-Swift types are automatically namespaced by the module that contains them and you should not add a class prefix. If two names from different modules collide you can disambiguate by prefixing the type name with the module name.
+Swift的类型根据模块生存自动命名空间，不需要自己添加类名前缀。如果两个不同模块的类重名了，你可以使用`模块名.类名`来调用
+
+<!--Swift types are automatically namespaced by the module that contains them and you should not add a class prefix. If two names from different modules collide you can disambiguate by prefixing the type name with the module name.-->
 
 ```swift
 import SomeModule
@@ -121,16 +140,23 @@ let myClass = MyModule.UsefulClass()
 ```
 
 
-## Spacing
+## 空格
 
-* Indent using 2 spaces rather than tabs to conserve space and help prevent line wrapping. Be sure to set this preference in Xcode as shown below:
+* 缩进应该是用4个空格而不是tab，Xcode设置如下图
+
+<!--* Indent using 4 spaces rather than tabs to conserve space and help prevent line wrapping. Be sure to set this preference in Xcode as shown below:-->
 
   ![Xcode indent settings](screens/indentation.png)
 
-* Method braces and other braces (`if`/`else`/`switch`/`while` etc.) always open on the same line as the statement but close on a new line.
-* Tip: You can re-indent by selecting some code (or ⌘A to select all) and then Control-I (or Editor\Structure\Re-Indent in the menu). Some of the Xcode template code will have 4-space tabs hard coded, so this is a good way to fix that.
+* 方法大括号和其他的大括号(`if`/`else`/`switch`/`while` 等等)总是在表达式的同一行打开，在新的一行结束
 
-**Preferred:**
+<!--* Method braces and other braces (`if`/`else`/`switch`/`while` etc.) always open on the same line as the statement but close on a new line.-->
+
+
+
+<!--* Tip: You can re-indent by selecting some code (or ⌘A to select all) and then Control-I (or Editor\Structure\Re-Indent in the menu). Some of the Xcode template code will have 4-space tabs hard coded, so this is a good way to fix that.-->
+
+**推荐:**
 ```swift
 if user.isHappy {
   // Do something
@@ -139,7 +165,7 @@ if user.isHappy {
 }
 ```
 
-**Not Preferred:**
+**不推荐:**
 ```swift
 if user.isHappy
 {
@@ -150,28 +176,43 @@ else {
 }
 ```
 
-* There should be exactly one blank line between methods to aid in visual clarity and organization. Whitespace within methods should separate functionality, but having too many sections in a method often means you should refactor into several methods.
+* 方法之间应该有一行空格，使代码清晰整洁，方法中的空格用以区分不同功能的代码块，过多的空格也提醒编程者代码是否需要重构
 
-## Comments
+<!--* There should be exactly one blank line between methods to aid in visual clarity and organization. Whitespace within methods should separate functionality, but having too many sections in a method often means you should refactor into several methods.-->
 
-When they are needed, use comments to explain **why** a particular piece of code does something. Comments must be kept up-to-date or deleted.
+## 注释
 
-Avoid block comments inline with code, as the code should be as self-documenting as possible. *Exception: This does not apply to those comments used to generate documentation.*
+当必要时，用注视来解释**为什么**这一段代码做了什么，注释也需要实时更新和删除
+
+<!--When they are needed, use comments to explain **why** a particular piece of code does something. Comments must be kept up-to-date or deleted.-->
+
+避免成块的注释，因为代码应该是够自我解释的，*例外：这不适用于用来生成文档的注释*
+
+<!--Avoid block comments inline with code, as the code should be as self-documenting as possible. *Exception: This does not apply to those comments used to generate documentation.*-->
 
 
-## Classes and Structures
+## 类和结构体
 
-### Which one to use?
+### 应该用哪一个?
 
-Remember, structs have [value semantics](https://developer.apple.com/library/mac/documentation/Swift/Conceptual/Swift_Programming_Language/ClassesAndStructures.html#//apple_ref/doc/uid/TP40014097-CH13-XID_144). Use structs for things that do not have an identity. An array that contains [a, b, c] is really the same as another array that contains [a, b, c] and they are completely interchangeable. It doesn't matter whether you use the first array or the second, because they represent the exact same thing. That's why arrays are structs.
+记住，结构体是[值类型](https://developer.apple.com/library/mac/documentation/Swift/Conceptual/Swift_Programming_Language/ClassesAndStructures.html#//apple_ref/doc/uid/TP40014097-CH13-XID_144)，用结构体来代表一个对象，那个对象必须没有id，例如数组[a, b, c]是和另一个数组[a, b, c]完全等价的，不论你用的是第一个还是第二个，它们都表示完全一样的东西，这就是为什么数组是结构体
 
-Classes have [reference semantics](https://developer.apple.com/library/mac/documentation/Swift/Conceptual/Swift_Programming_Language/ClassesAndStructures.html#//apple_ref/doc/uid/TP40014097-CH13-XID_145). Use classes for things that do have an identity or a specific life cycle. You would model a person as a class because two person objects are two different things. Just because two people have the same name and birthdate, doesn't mean they are the same person. But the person's birthdate would be a struct because a date of 3 March 1950 is the same as any other date object for 3 March 1950. The date itself doesn't have an identity.
+<!--Remember, structs have [value semantics](https://developer.apple.com/library/mac/documentation/Swift/Conceptual/Swift_Programming_Language/ClassesAndStructures.html#//apple_ref/doc/uid/TP40014097-CH13-XID_144). Use structs for things that do not have an identity. An array that contains [a, b, c] is really the same as another array that contains [a, b, c] and they are completely interchangeable. It doesn't matter whether you use the first array or the second, because they represent the exact same thing. That's why arrays are structs.-->
 
-Sometimes, things should be structs but need to conform to `AnyObject` or are historically modeled as classes already (`NSDate`, `NSSet`). Try to follow these guidelines as closely as possible.
+类是[引用类型](https://developer.apple.com/library/mac/documentation/Swift/Conceptual/Swift_Programming_Language/ClassesAndStructures.html#//apple_ref/doc/uid/TP40014097-CH13-XID_145)，用类来代表一个对象，那个对象必须有id或者有特定的生命循环。例如人a和人b，他们如果有同样的名字，和同样的生日，不代表他们是同一个人，但是人的生日应该是结构体，因为1950年3月3日可以和另一个1950年3月3日完全相同。日期并没有id
 
-### Example definition
+<!--Classes have [reference semantics](https://developer.apple.com/library/mac/documentation/Swift/Conceptual/Swift_Programming_Language/ClassesAndStructures.html#//apple_ref/doc/uid/TP40014097-CH13-XID_145). Use classes for things that do have an identity or a specific life cycle. You would model a person as a class because two person objects are two different things. Just because two people have the same name and birthdate, doesn't mean they are the same person. But the person's birthdate would be a struct because a date of 3 March 1950 is the same as any other date object for 3 March 1950. The date itself doesn't have an identity.-->
 
-Here's an example of a well-styled class definition:
+有时候对象应该用结构体，但是需要遵从`AnyObject`协议或者已经被定义为类的(`NSDate`, `NSSet`)
+
+<!--Sometimes, things should be structs but need to conform to `AnyObject` or are historically modeled as classes already (`NSDate`, `NSSet`). Try to follow these guidelines as closely as possible.-->
+
+### 定义举例
+
+这是一个良好风格的类定义的例子：
+
+<!--Here's an example of a well-styled class definition:-->
+
 
 ```swift
 class Circle: Shape {
@@ -183,6 +224,9 @@ class Circle: Shape {
     }
     set {
       radius = newValue / 2
+    }
+    didSet {
+    	// property observers
     }
   }
 
@@ -210,12 +254,25 @@ class Circle: Shape {
 }
 ```
 
-The example above demonstrates the following style guidelines:
+这个例子很好的展示了以下的风格指南
 
- + Specify types for properties, variables, constants, argument declarations and other statements with a space after the colon but not before, e.g. `x: Int`, and `Circle: Shape`.
- + Define multiple variables and structures on a single line if they share a common purpose / context.
- + Indent getter and setter definitions and property observers.
- + Don't add modifiers such as `internal` when they're already the default. Similarly, don't repeat the access modifier when overriding a method.
+<!--The example above demonstrates the following style guidelines:-->
+
++ 特定的属性，变量，常量，参数的定义以及其他的表达式需要在冒号之后有一个空格，例如`x: Int`， `Circle: Shape`
+
+<!-- + Specify types for properties, variables, constants, argument declarations and other statements with a space after the colon but not before, e.g. `x: Int`, and `Circle: Shape`.-->
+
++ 定义多个变量和结构体在同一行他们需要逗号分隔，共享同一个上下文，例如 `var`
+
+<!-- + Define multiple variables and structures on a single line if they share a common purpose / context.-->
+
++ getter和setter和property observers的定义需要缩进
+
+ <!--+ Indent getter and setter definitions and property observers.-->
+
++ 不要添加`internal`因为它是默认修饰符。同样的override方法时不要重复修饰符
+ 
+<!-- + Don't add modifiers such as `internal` when they're already the default. Similarly, don't repeat the access modifier when overriding a method.-->
 
 
 ### Use of Self
@@ -245,7 +302,7 @@ When adding protocol conformance to a class, prefer adding a separate class exte
 
 Also, don't forget the `// MARK: -` comment to keep things well-organized!
 
-**Preferred:**
+**推荐:**
 ```swift
 class MyViewcontroller: UIViewController {
   // class stuff here
@@ -262,7 +319,7 @@ extension MyViewcontroller: UIScrollViewDelegate {
 }
 ```
 
-**Not Preferred:**
+**不推荐:**
 ```swift
 class MyViewcontroller: UIViewController, UITableViewDataSource, UIScrollViewDelegate {
   // all methods
@@ -273,14 +330,14 @@ class MyViewcontroller: UIViewController, UITableViewDataSource, UIScrollViewDel
 
 For conciseness, if a computed property is read-only, omit the get clause. The get clause is required only when a set clause is provided.
 
-**Preferred:**
+**推荐:**
 ```swift
 var diameter: Double {
   return radius * 2
 }
 ```
 
-**Not Preferred:**
+**不推荐:**
 ```swift
 var diameter: Double {
   get {
@@ -313,7 +370,7 @@ func reticulateSplines(spline: [Double], adjustmentFactor: Double,
 
 Use trailing closure syntax only if there's a single closure expression parameter at the end of the argument list. Give the closure parameters descriptive names.
 
-**Preferred:**
+**推荐:**
 ```swift
 UIView.animateWithDuration(1.0) {
   self.myView.alpha = 0
@@ -329,7 +386,7 @@ UIView.animateWithDuration(1.0,
 )
 ```
 
-**Not Preferred:**
+**不推荐:**
 ```swift
 UIView.animateWithDuration(1.0, animations: {
   self.myView.alpha = 0
@@ -356,13 +413,13 @@ attendeeList.sort { a, b in
 
 Always use Swift's native types when available. Swift offers bridging to Objective-C so you can still use the full set of methods as needed.
 
-**Preferred:**
+**推荐:**
 ```swift
 let width = 120.0                                    // Double
 let widthString = (width as NSNumber).stringValue    // String
 ```
 
-**Not Preferred:**
+**不推荐:**
 ```swift
 let width: NSNumber = 120.0                          // NSNumber
 let widthString: NSString = width.stringValue        // NSString
@@ -401,7 +458,7 @@ When naming optional variables and properties, avoid naming them like `optionalS
 
 For optional binding, shadow the original name when appropriate rather than using names like `unwrappedView` or `actualLabel`.
 
-**Preferred:**
+**推荐:**
 ```swift
 var subview: UIView?
 var volume: Double?
@@ -412,7 +469,7 @@ if let subview = subview, volume = volume {
 }
 ```
 
-**Not Preferred:**
+**不推荐:**
 ```swift
 var optionalSubview: UIView?
 var volume: Double?
@@ -428,13 +485,13 @@ if let unwrappedSubview = optionalSubview {
 
 Use the native Swift struct initializers rather than the legacy CGGeometry constructors.
 
-**Preferred:**
+**推荐:**
 ```swift
 let bounds = CGRect(x: 40, y: 20, width: 120, height: 80)
 let centerPoint = CGPoint(x: 96, y: 42)
 ```
 
-**Not Preferred:**
+**不推荐:**
 ```swift
 let bounds = CGRectMake(40, 20, 120, 80)
 let centerPoint = CGPointMake(96, 42)
@@ -446,7 +503,7 @@ Prefer the struct-scope constants `CGRect.infinite`, `CGRect.null`, etc. over gl
 
 Prefer compact code and let the compiler infer the type for a constant or variable, unless you need a specific type other than the default such as `CGFloat` or `Int16`.
 
-**Preferred:**
+**推荐:**
 ```swift
 let message = "Click the button"
 let currentBounds = computeViewBounds()
@@ -454,7 +511,7 @@ var names = [String]()
 let maximumWidth: CGFloat = 106.5
 ```
 
-**Not Preferred:**
+**不推荐:**
 ```swift
 let message: String = "Click the button"
 let currentBounds: CGRect = computeViewBounds()
@@ -468,14 +525,14 @@ var names: [String] = []
 
 Prefer the shortcut versions of type declarations over the full generics syntax.
 
-**Preferred:**
+**推荐:**
 ```swift
 var deviceModels: [String]
 var employees: [Int: String]
 var faxNumber: Int?
 ```
 
-**Not Preferred:**
+**不推荐:**
 ```swift
 var deviceModels: Array<String>
 var employees: Dictionary<Int, String>
@@ -487,7 +544,7 @@ var faxNumber: Optional<Int>
 
 Prefer the `for-in` style of `for` loop over the `for-condition-increment` style.
 
-**Preferred:**
+**推荐:**
 ```swift
 for _ in 0..<3 {
   println("Hello three times")
@@ -498,7 +555,7 @@ for (index, person) in attendeeList.enumerate() {
 }
 ```
 
-**Not Preferred:**
+**不推荐:**
 ```swift
 for var i = 0; i < 3; i++ {
   println("Hello three times")
@@ -519,12 +576,12 @@ Do not write multiple statements on a single line separated with semicolons.
 
 The only exception to this rule is the `for-conditional-increment` construct, which requires semicolons. However, alternative `for-in` constructs should be used where possible.
 
-**Preferred:**
+**推荐:**
 ```swift
 let swift = "not a scripting language"
 ```
 
-**Not Preferred:**
+**不推荐:**
 ```swift
 let swift = "not a scripting language";
 ```
@@ -535,12 +592,12 @@ let swift = "not a scripting language";
 
 Use US English spelling to match Apple's API.
 
-**Preferred:**
+**推荐:**
 ```swift
 let color = "red"
 ```
 
-**Not Preferred:**
+**不推荐:**
 ```swift
 let colour = "red"
 ```
@@ -576,12 +633,12 @@ file:
 
 Smiley faces are a very prominent style feature of the raywenderlich.com site! It is very important to have the correct smile signifying the immense amount of happiness and excitement for the coding topic. The closing square bracket `]` is used because it represents the largest smile able to be captured using ASCII art. A closing parenthesis `)` creates a half-hearted smile, and thus is not preferred.
 
-**Preferred:**
+**推荐:**
 ```
 :]
 ```
 
-**Not Preferred:**
+**不推荐:**
 ```
 :)
 ```  
