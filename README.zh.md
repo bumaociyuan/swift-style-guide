@@ -20,9 +20,9 @@
 * [空格](#空格)
 * [注释](#注释)
 * [类和结构体](#类和结构体)
-  * [Use of Self](#use-of-self)
-  * [Protocol Conformance](#protocol-conformance)
-  * [Computed Properties](#computed-properties)
+  * [Self的使用](#Self的使用)
+  * [协议的遵从](#协议的遵从)
+  * [计算属性](#计算属性)
 * [Function Declarations](#function-declarations)
 * [Closure Expressions](#closure-expressions)
 * [Types](#types)
@@ -254,7 +254,7 @@ class Circle: Shape {
 }
 ```
 
-这个例子很好的展示了以下的风格指南
+这个例子很好的展示了以下的风格
 
 <!--The example above demonstrates the following style guidelines:-->
 
@@ -275,32 +275,42 @@ class Circle: Shape {
 <!-- + Don't add modifiers such as `internal` when they're already the default. Similarly, don't repeat the access modifier when overriding a method.-->
 
 
-### Use of Self
+### Self的使用
 
-For conciseness, avoid using `self` since Swift does not require it to access an object's properties or invoke its methods.
+为了简洁，避免使用`self`因为Swift不需要`self`来访问属性或者执行方法
 
-Use `self` when required to differentiate between property names and arguments in initializers, and when referencing properties in closure expressions (as required by the compiler):
+<!--For conciseness, avoid using `self` since Swift does not require it to access an object's properties or invoke its methods.-->
+
+只有在需要用`self`来区分属性名和参数名时，和当在闭包里使用属性时才使用`self`：
+
+<!--Use `self` when required to differentiate between property names and arguments in initializers, and when referencing properties in closure expressions (as required by the compiler):-->
 
 ```swift
 class BoardLocation {
   let row: Int, column: Int
 
   init(row: Int, column: Int) {
+    // 区分属性名和参数名
     self.row = row
     self.column = column
     
     let closure = {
+      // 闭包
       println(self.row)
     }
   }
 }
 ```
 
-### Protocol Conformance
+### 协议的遵从
 
-When adding protocol conformance to a class, prefer adding a separate class extension for the protocol methods. This keeps the related methods grouped together with the protocol and can simplify instructions to add a protocol to a class with its associated methods.
+当对一个类添加遵从协议的代码时，推荐添加一个类的extension来些协议的方法，保持这些方法成为一组代码块，可以简化添加协议的方法和相关方法到一个类里面
 
-Also, don't forget the `// MARK: -` comment to keep things well-organized!
+另外不要忘记使用 `// MARK: -` 来组织代码块
+
+<!--When adding protocol conformance to a class, prefer adding a separate class extension for the protocol methods. This keeps the related methods grouped together with the protocol and can simplify instructions to add a protocol to a class with its associated methods.
+
+Also, don't forget the `// MARK: -` comment to keep things well-organized!-->
 
 **推荐:**
 ```swift
@@ -326,9 +336,11 @@ class MyViewcontroller: UIViewController, UITableViewDataSource, UIScrollViewDel
 }
 ```
 
-### Computed Properties
+### 计算属性
 
-For conciseness, if a computed property is read-only, omit the get clause. The get clause is required only when a set clause is provided.
+为了简洁，如果一个计算属性是只读的，就不需要get的括号，get的子句只在有set子句时才需要
+
+<!--For conciseness, if a computed property is read-only, omit the get clause. The get clause is required only when a set clause is provided.-->
 
 **推荐:**
 ```swift
@@ -346,9 +358,11 @@ var diameter: Double {
 }
 ```
 
-## Function Declarations
+## 函数的定义
 
-Keep short function declarations on one line including the opening brace:
+保持简短的函数定义在一行里包含前括号：
+
+<!--Keep short function declarations on one line including the opening brace:-->
 
 ```swift
 func reticulateSplines(spline: [Double]) -> Bool {
@@ -356,7 +370,9 @@ func reticulateSplines(spline: [Double]) -> Bool {
 }
 ```
 
-For functions with long signatures, add line breaks at appropriate points and add an extra indent on subsequent lines:
+对于较长的函数，在适当的位置换行，并在下一行添加一个缩进：
+
+<!--For functions with long signatures, add line breaks at appropriate points and add an extra indent on subsequent lines:-->
 
 ```swift
 func reticulateSplines(spline: [Double], adjustmentFactor: Double,
@@ -366,9 +382,11 @@ func reticulateSplines(spline: [Double], adjustmentFactor: Double,
 ```
 
 
-## Closure Expressions
+## 闭包表达式
 
-Use trailing closure syntax only if there's a single closure expression parameter at the end of the argument list. Give the closure parameters descriptive names.
+末尾闭包语法只适用于只有一个闭包在末尾，如果有多个闭包还是推荐使用参数标签
+
+<!--Use trailing closure syntax only if there's a single closure expression parameter at the end of the argument list. Give the closure parameters descriptive names.-->
 
 **推荐:**
 ```swift
