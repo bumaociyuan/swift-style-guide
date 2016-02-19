@@ -23,17 +23,17 @@
   * [Self的使用](#Self的使用)
   * [协议的遵从](#协议的遵从)
   * [计算属性](#计算属性)
-* [Function Declarations](#function-declarations)
-* [Closure Expressions](#closure-expressions)
-* [Types](#types)
-  * [Constants](#constants)
-  * [Optionals](#optionals)
-  * [Struct Initializers](#struct-initializers)
-  * [Type Inference](#type-inference)
-  * [Syntactic Sugar](#syntactic-sugar)
-* [Control Flow](#control-flow)
-* [Semicolons](#semicolons)
-* [Language](#language)
+* [函数的定义](#函数的定义)
+* [闭包表达式](#闭包表达式)
+* [类型](#类型)
+  * [常量](#常量)
+  * [可选类型](#可选类型)
+  * [结构体的初始化](#结构体的初始化)
+  * [类型推断](#类型推断)
+  * [语法糖](#语法糖)
+* [控制流](#控制流)
+* [分号](#分号)
+* [语言](#语言)
 * [Copyright Statement](#copyright-statement)
 * [Smiley Face](#smiley-face)
 * [Credits](#credits)
@@ -427,9 +427,11 @@ attendeeList.sort { a, b in
 ```
 
 
-## Types
+## 类型
 
-Always use Swift's native types when available. Swift offers bridging to Objective-C so you can still use the full set of methods as needed.
+优先使用Swift原生的类型，必要时才使用Objective-C的类型
+
+<!--Always use Swift's native types when available. Swift offers bridging to Objective-C so you can still use the full set of methods as needed.-->
 
 **推荐:**
 ```swift
@@ -443,28 +445,42 @@ let width: NSNumber = 120.0                          // NSNumber
 let widthString: NSString = width.stringValue        // NSString
 ```
 
-In Sprite Kit code, use `CGFloat` if it makes the code more succinct by avoiding too many conversions.
+在Sprite Kit里使用`CGFloat`可以使代码更简洁，减少转换
 
-### Constants
+<!--In Sprite Kit code, use `CGFloat` if it makes the code more succinct by avoiding too many conversions.-->
 
-Constants are defined using the `let` keyword, and variables with the `var` keyword. Always use `let` instead of `var` if the value of the variable will not change.
+### 常量
 
-**Tip:** A good technique is to define everything using `let` and only change it to `var` if the compiler complains!
+常量的定义应使用`let`关键字，变量使用`var`关键字。如果变量不需要改变，那就用`let`替换`var`
+
+<!--Constants are defined using the `let` keyword, and variables with the `var` keyword. Always use `let` instead of `var` if the value of the variable will not change.-->
+
+**小提示:** 定义所有变量时都用`let`关键字，当编译器报错时才把`let`改成`var`
+
+<!--**Tip:** A good technique is to define everything using `let` and only change it to `var` if the compiler complains!-->
 
 
-### Optionals
+### 可选类型
 
-Declare variables and function return types as optional with `?` where a nil value is acceptable.
+声明变量和函数的返回值为可选类型用`?`，值就可以为nil
 
-Use implicitly unwrapped types declared with `!` only for instance variables that you know will be initialized later before use, such as subviews that will be set up in `viewDidLoad`.
+<!--Declare variables and function return types as optional with `?` where a nil value is acceptable.-->
 
-When accessing an optional value, use optional chaining if the value is only accessed once or if there are many optionals in the chain:
+只有当你稍后会初始化变量，才用强制解包`!`来声明变量，例如在`viewDidLoad`里面初始化的subviews。`@IBOutlet weak var someButton: UIButton!`StoryBoard里面直接连接IBOutlet自动生成的代码也是用`!`声明的
+
+<!--Use implicitly unwrapped types declared with `!` only for instance variables that you know will be initialized later before use, such as subviews that will be set up in `viewDidLoad`.-->
+
+当访问一个可选值，使用可选链如果该值只访问一次或者有链中的许多可选值
+
+<!--When accessing an optional value, use optional chaining if the value is only accessed once or if there are many optionals in the chain:-->
 
 ```swift
 self.textContainer?.textLabel?.setNeedsDisplay()
 ```
 
-Use optional binding when it's more convenient to unwrap once and perform multiple operations:
+用可选绑定可以更方便的一次解开多个operations
+
+<!--Use optional binding when it's more convenient to unwrap once and perform multiple operations:-->
 
 ```swift
 if let textContainer = self.textContainer {
@@ -472,9 +488,13 @@ if let textContainer = self.textContainer {
 }
 ```
 
-When naming optional variables and properties, avoid naming them like `optionalString` or `maybeView` since their optional-ness is already in the type declaration.
+当命名可以选变量或者属性时，避免使用`optionalString` 或者 `maybeView`，应为他们的类型已经表明他们是可以选的了
 
-For optional binding, shadow the original name when appropriate rather than using names like `unwrappedView` or `actualLabel`.
+<!--When naming optional variables and properties, avoid naming them like `optionalString` or `maybeView` since their optional-ness is already in the type declaration.-->
+
+可选绑定，不推荐`unwrappedView` 或者 `actualLabel`此类的命名，推荐和原变量一样的名字
+
+<!--For optional binding, shadow the original name when appropriate rather than using names like `unwrappedView` or `actualLabel`.-->
 
 **推荐:**
 ```swift
@@ -499,9 +519,11 @@ if let unwrappedSubview = optionalSubview {
 }
 ```
 
-### Struct Initializers
+### 结构体的初始化
 
-Use the native Swift struct initializers rather than the legacy CGGeometry constructors.
+用Swift原生的初始化方法而不是用传统CGGeometry中的构造函数
+
+<!--Use the native Swift struct initializers rather than the legacy CGGeometry constructors.-->
 
 **推荐:**
 ```swift
@@ -515,11 +537,16 @@ let bounds = CGRectMake(40, 20, 120, 80)
 let centerPoint = CGPointMake(96, 42)
 ```
 
-Prefer the struct-scope constants `CGRect.infinite`, `CGRect.null`, etc. over global constants `CGRectInfinite`, `CGRectNull`, etc. For existing variables, you can use the shorter `.zero`.
+结构体常量推荐使用struct-scope例如`CGRect.infinite`, `CGRect.null`。不推荐用全局常量`CGRectInfinite`, `CGRectNull`。对于变量赋值，你可以用更短的`.zero`
 
-### Type Inference
+<!--Prefer the struct-scope constants `CGRect.infinite`, `CGRect.null`, etc. over global constants `CGRectInfinite`, `CGRectNull`, etc. For existing variables, you can use the shorter `.zero`.-->
 
-Prefer compact code and let the compiler infer the type for a constant or variable, unless you need a specific type other than the default such as `CGFloat` or `Int16`.
+### 类型推断
+
+推荐更短的代码，并让编译器自己推断变量类型，除非你需要制定一个变量的默认类型，例如`CGFloat` 或者 `Int16`
+
+<!--Prefer compact code and let the compiler infer the type for a constant or variable, unless you need a specific type other than the default such as `CGFloat` or `Int16`.
+-->
 
 **推荐:**
 ```swift
@@ -536,12 +563,16 @@ let currentBounds: CGRect = computeViewBounds()
 var names: [String] = []
 ```
 
-**NOTE**: Following this guideline means picking descriptive names is even more important than before.
+**注意**：根据这一指导方针意味着选择描述性的名字，甚至比以前更重要。
+
+<!--**NOTE**: Following this guideline means picking descriptive names is even more important than before.-->
 
 
-### Syntactic Sugar
+### 语法糖
 
-Prefer the shortcut versions of type declarations over the full generics syntax.
+推荐更短的写法，而不是通用语法
+
+<!--Prefer the shortcut versions of type declarations over the full generics syntax.-->
 
 **推荐:**
 ```swift
@@ -558,9 +589,11 @@ var faxNumber: Optional<Int>
 ```
 
 
-## Control Flow
+## 控制流
 
-Prefer the `for-in` style of `for` loop over the `for-condition-increment` style.
+推荐使用`for-in`而不是使用`for-condition-increment`
+
+<!--Prefer the `for-in` style of `for` loop over the `for-condition-increment` style.-->
 
 **推荐:**
 ```swift
@@ -586,13 +619,19 @@ for var i = 0; i < attendeeList.count; i++ {
 ```
 
 
-## Semicolons
+## 分号
 
-Swift does not require a semicolon after each statement in your code. They are only required if you wish to combine multiple statements on a single line.
+Swift不需要在每行后面加分号。只有当你需要在一行中写多行代码时才需要加分号
 
-Do not write multiple statements on a single line separated with semicolons.
+<!--Swift does not require a semicolon after each statement in your code. They are only required if you wish to combine multiple statements on a single line.-->
 
-The only exception to this rule is the `for-conditional-increment` construct, which requires semicolons. However, alternative `for-in` constructs should be used where possible.
+但是不要在一行中写多行代码
+
+<!--Do not write multiple statements on a single line separated with semicolons.-->
+
+只有一个例外就是`for-conditional-increment`结构需要分号，但是请尽量使用`for-in`结构
+
+<!--The only exception to this rule is the `for-conditional-increment` construct, which requires semicolons. However, alternative `for-in` constructs should be used where possible.-->
 
 **推荐:**
 ```swift
@@ -604,11 +643,15 @@ let swift = "not a scripting language"
 let swift = "not a scripting language";
 ```
 
-**NOTE**: Swift is very different to JavaScript, where omitting semicolons is [generally considered unsafe](http://stackoverflow.com/questions/444080/do-you-recommend-using-semicolons-after-every-statement-in-javascript)
+**注意**: Swift和JavaScript很不相同，[js中漏掉分号是不安全的](http://stackoverflow.com/questions/444080/do-you-recommend-using-semicolons-after-every-statement-in-javascript)
 
-## Language
+<!--**NOTE**: Swift is very different to JavaScript, where omitting semicolons is [generally considered unsafe](http://stackoverflow.com/questions/444080/do-you-recommend-using-semicolons-after-every-statement-in-javascript)-->
 
-Use US English spelling to match Apple's API.
+## 语言
+
+使用美式英语拼写
+
+<!--Use US English spelling to match Apple's API.-->
 
 **推荐:**
 ```swift
